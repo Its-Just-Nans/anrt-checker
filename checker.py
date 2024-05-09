@@ -82,7 +82,7 @@ for one_item in resp:
     shaed = str(make_sha(one_item))
     if shaed not in current_data:
         smol_item = f"{one_item['titre']}\n{one_item['ville']} - {one_item['rs']}\nhttps://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/detail/{one_item['crypt']}"
-        notify(smol_item)
+        notify(smol_item + "\n-------------------")
         print("New item found")
         to_add.append(shaed)
 
