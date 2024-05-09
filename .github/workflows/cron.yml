@@ -25,4 +25,4 @@ jobs:
         run: python checker.py
         env: # Or as an environment variable
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          COOKIE: ${{ secrets.COOKIE }}
+          SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}

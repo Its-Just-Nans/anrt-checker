@@ -7,10 +7,15 @@ from os import getenv
 
 load_dotenv()
 
-cookies = {
-    "PHPSESSID": getenv("COOKIE"),
-}
+SECRET_LOGIN = getenv("SECRET_LOGIN")
 
+login = requests.get(SECRET_LOGIN)
+
+cookie = login.history[0].cookies["PHPSESSID"]
+
+cookies = {
+    "PHPSESSID": cookie,
+}
 
 DATA = "data.json"
 URL_WEBHOOK = getenv("WEBHOOK_URL")
