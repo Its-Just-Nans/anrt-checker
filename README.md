@@ -1,6 +1,6 @@
 # antr-checker
 
-Scrap Phd offers from [ANRT website](https://offres-et-candidatures-cifre.anrt.asso.fr) and send them to a discord channel.
+Scrap PhD offers from [ANRT website](https://offres-et-candidatures-cifre.anrt.asso.fr) and send them to a discord channel.
 
 ## `.env`
 
