@@ -53,7 +53,6 @@ response = requests.post(
 
 
 def notify(text):
-    print("Notifying", text)
     requests.post(
         URL_WEBHOOK,
         json={
