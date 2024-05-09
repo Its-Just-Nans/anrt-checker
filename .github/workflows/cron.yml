@@ -8,10 +8,12 @@ on:
       - main
 
 jobs:
-  deploy:
+  cron_check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pip install python-dotenv requests
       - name: run
         run: python checker.py
         env: # Or as an environment variable
