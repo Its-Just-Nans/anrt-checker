@@ -1,0 +1,16 @@
+name: Cron check
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: run
+        run: python checker.py
+        env: # Or as an environment variable
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          COOKIE: ${{ secrets.COOKIE }}
