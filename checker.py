@@ -8,17 +8,12 @@ from os import getenv
 load_dotenv()
 
 SECRET_LOGIN = getenv("SECRET_LOGIN")
-
-login = requests.get(SECRET_LOGIN)
-
-cookie = login.history[0].cookies["PHPSESSID"]
-
-cookies = {
-    "PHPSESSID": cookie,
-}
-
 DATA = "data.json"
 URL_WEBHOOK = getenv("WEBHOOK_URL")
+
+# login to get the cookie
+login = requests.get(SECRET_LOGIN)
+cookie = login.history[0].cookies["PHPSESSID"]
 
 
 def make_sha(item):
@@ -40,20 +35,19 @@ def load_data():
     return loaded
 
 
-headers = {
-    "Content-Type": "application/x-www-form-urlencoded",
-}
-
-data = {
-    "draw": "1",
-    "offreType": "entreprise",
-}
-
+# get the data
 response = requests.post(
     "https://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/dtList",
-    cookies=cookies,
-    headers=headers,
-    data=data,
+    cookies={
+        "PHPSESSID": cookie,
+    },
+    headers={
+        "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data={
+        "draw": "1",
+        "offreType": "entreprise",
+    },
 )
 
 
@@ -76,7 +70,6 @@ except Exception as _e:
     resp = {}
 
 if "data" not in resp:
-    print("Invalid cookie")
     notify("Invalid cookie")
     exit(1)
 
