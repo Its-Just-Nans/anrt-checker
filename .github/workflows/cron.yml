@@ -15,11 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Cache
-        id: cache-restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
           path: data.json
-          key: ${{ runner.os }}-cache
+          key: cache-${{ hashFiles('**/data.json') }}
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
@@ -27,9 +26,3 @@ jobs:
         env: # Or as an environment variable
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
-      - uses: actions/cache/save@v4
-        id: cache-save
-        if: always() # always save cache
-        with:
-          path: data.json
-          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
