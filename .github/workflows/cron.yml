@@ -27,7 +27,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
       - uses: actions/cache/save@v3
-        if: always() // always save cache
+        if: always() # always save cache
         with:
           path: data.json
           key: data
