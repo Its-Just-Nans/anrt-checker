@@ -15,10 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Cache
+        id: cache-primes-restore
         uses: actions/cache@v4
         with:
           path: data.json
-          key: data
+          key: ${{ runner.os }}-primes
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
@@ -30,3 +31,4 @@ jobs:
         if: always() # always save cache
         with:
           path: data.json
+          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
