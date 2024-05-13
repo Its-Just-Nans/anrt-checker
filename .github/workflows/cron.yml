@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Cache
-        id: cache-primes-restore
+        id: cache-restore
         uses: actions/cache@v4
         with:
           path: data.json
@@ -28,7 +28,8 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
       - uses: actions/cache/save@v4
+        id: cache-save
         if: always() # always save cache
         with:
           path: data.json
-          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
