@@ -19,6 +19,7 @@ jobs:
         with:
           path: data.json
           key: data
+          save-always: true
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
