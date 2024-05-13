@@ -19,7 +19,6 @@ jobs:
         with:
           path: data.json
           key: data
-          save-always: true
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
@@ -27,3 +26,8 @@ jobs:
         env: # Or as an environment variable
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
+      - uses: actions/cache/save@v3
+        if: always() // always save cache
+        with:
+          path: data.json
+          key: data
