@@ -19,7 +19,7 @@ jobs:
         with:
           path: data.json
           key: data-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: primes-${{ runner.os }}
+          restore-keys: data-${{ runner.os }}
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
