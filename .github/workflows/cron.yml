@@ -18,7 +18,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: data.json
-          key: data
+          key: data-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: data-${{ runner.os }}
       - name: Install dependencies
         run: pip install python-dotenv requests
       - name: run
