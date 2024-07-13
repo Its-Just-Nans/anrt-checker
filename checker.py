@@ -16,10 +16,10 @@ URL_WEBHOOK = getenv("WEBHOOK_URL")
 
 def try_request_insecure(func, *args, **kwargs):
     res = None
-    # try:
-    #     res = func(*args, **kwargs)
-    # except Exception as _e:
-    #     pass
+    try:
+        res = func(*args, **kwargs)
+    except Exception as _e:
+        pass
     if res is None:
         try:
             res = func(*args, verify=False)
@@ -33,7 +33,6 @@ def try_request_insecure(func, *args, **kwargs):
 
 # login to get the cookie
 login = try_request_insecure(requests.get, SECRET_LOGIN)
-print(len(login.history))
 cookie = login.history[0].cookies["PHPSESSID"]
 
 
@@ -98,13 +97,19 @@ if "data" not in resp:
 
 resp = resp["data"]
 
+found = []
+
 for one_item in resp:
     shaed = str(make_sha(one_item))
     if shaed not in current_data:
-        smol_item = f"{one_item['titre']}\n{one_item['ville']} - {one_item['rs']}\nhttps://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/detail/{one_item['crypt']}"
-        notify(smol_item + "\n-------------------")
-        print("New item found")
+        found.append(one_item)
         to_add.append(shaed)
+
+print(f"Found {len(found)} new items")
+for one_item in found:
+    smol_item = f"{one_item['titre']}\n{one_item['ville']} - {one_item['rs']}\nhttps://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/detail/{one_item['crypt']}"
+    notify(smol_item + "\n-------------------")
+    print("New item found")
 
 
 final = current_data + to_add
