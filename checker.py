@@ -12,7 +12,19 @@ DATA = "data.json"
 URL_WEBHOOK = getenv("WEBHOOK_URL")
 
 # login to get the cookie
-login = requests.get(SECRET_LOGIN)
+login = None
+try:
+    login = requests.get(SECRET_LOGIN)
+except Exception as _e:
+    pass
+if login is None:
+    try:
+        login = requests.get(SECRET_LOGIN, verify=False)
+    except Exception as _e:
+        pass
+if login is None:
+    print("Error during login")
+    exit(1)
 cookie = login.history[0].cookies["PHPSESSID"]
 
 
@@ -52,14 +64,18 @@ response = requests.post(
 
 
 def notify(text):
-    requests.post(
-        URL_WEBHOOK,
-        json={
-            "username": "ANTR checker",
-            "content": text,
-            "avatar_url": "https://offres-et-candidatures-cifre.anrt.asso.fr/public/images/logos/logo-cifre-s.png",
-        },
-    )
+    try:
+        requests.post(
+            URL_WEBHOOK,
+            json={
+                "username": "ANTR checker",
+                "content": text,
+                "avatar_url": "https://offres-et-candidatures-cifre.anrt.asso.fr/public/images/logos/logo-cifre-s.png",
+            },
+        )
+    except Exception as _e:
+        print("Error during notification")
+        exit(1)
 
 
 current_data = load_data()
