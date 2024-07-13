@@ -89,6 +89,7 @@ to_add = []
 try:
     resp = response.json()
 except Exception as _e:
+    print("Error during parsing")
     resp = {}
 
 if "data" not in resp:
