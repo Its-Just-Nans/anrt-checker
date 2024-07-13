@@ -16,10 +16,10 @@ URL_WEBHOOK = getenv("WEBHOOK_URL")
 
 def try_request_insecure(func, *args, **kwargs):
     res = None
-    try:
-        res = func(*args, **kwargs)
-    except Exception as _e:
-        pass
+    # try:
+    #     res = func(*args, **kwargs)
+    # except Exception as _e:
+    #     pass
     if res is None:
         try:
             res = func(*args, verify=False)
@@ -33,6 +33,7 @@ def try_request_insecure(func, *args, **kwargs):
 
 # login to get the cookie
 login = try_request_insecure(requests.get, SECRET_LOGIN)
+print(len(login.history))
 cookie = login.history[0].cookies["PHPSESSID"]
 
 
