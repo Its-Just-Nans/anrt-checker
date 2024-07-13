@@ -4,27 +4,35 @@ from json import dumps, loads
 from os.path import exists
 from dotenv import load_dotenv
 from os import getenv
+import warnings
 
+warnings.filterwarnings("ignore")
 load_dotenv()
 
 SECRET_LOGIN = getenv("SECRET_LOGIN")
 DATA = "data.json"
 URL_WEBHOOK = getenv("WEBHOOK_URL")
 
-# login to get the cookie
-login = None
-try:
-    login = requests.get(SECRET_LOGIN)
-except Exception as _e:
-    pass
-if login is None:
+
+def try_request_insecure(func, *args, **kwargs):
+    res = None
     try:
-        login = requests.get(SECRET_LOGIN, verify=False)
+        res = func(*args, **kwargs)
     except Exception as _e:
         pass
-if login is None:
-    print("Error during login")
-    exit(1)
+    if res is None:
+        try:
+            res = func(*args, verify=False)
+        except Exception as _e:
+            pass
+    if res is None:
+        print("Error during request")
+        exit(1)
+    return res
+
+
+# login to get the cookie
+login = try_request_insecure(requests.get, SECRET_LOGIN)
 cookie = login.history[0].cookies["PHPSESSID"]
 
 
@@ -48,7 +56,8 @@ def load_data():
 
 
 # get the data
-response = requests.post(
+response = try_request_insecure(
+    requests.post,
     "https://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/dtList",
     cookies={
         "PHPSESSID": cookie,
@@ -64,18 +73,15 @@ response = requests.post(
 
 
 def notify(text):
-    try:
-        requests.post(
-            URL_WEBHOOK,
-            json={
-                "username": "ANTR checker",
-                "content": text,
-                "avatar_url": "https://offres-et-candidatures-cifre.anrt.asso.fr/public/images/logos/logo-cifre-s.png",
-            },
-        )
-    except Exception as _e:
-        print("Error during notification")
-        exit(1)
+    try_request_insecure(
+        requests.post,
+        URL_WEBHOOK,
+        json={
+            "username": "ANTR checker",
+            "content": text,
+            "avatar_url": "https://offres-et-candidatures-cifre.anrt.asso.fr/public/images/logos/logo-cifre-s.png",
+        },
+    )
 
 
 current_data = load_data()
