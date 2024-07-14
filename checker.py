@@ -88,8 +88,9 @@ current_data = load_data()
 to_add = []
 try:
     resp = response.json()
-except Exception as _e:
+except Exception as e:
     print("Error during parsing")
+    print(e)
     resp = {}
 
 if "data" not in resp:
