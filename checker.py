@@ -91,6 +91,7 @@ try:
 except Exception as e:
     print("Error during parsing")
     print(e)
+    print(response.text)
     resp = {}
 
 if "data" not in resp:
