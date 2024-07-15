@@ -1,4 +1,5 @@
 import requests
+from requests.adapters import HTTPAdapter, Retry
 from hashlib import sha256
 from json import dumps, loads
 from os.path import exists
@@ -14,25 +15,31 @@ DATA = "data.json"
 URL_WEBHOOK = getenv("WEBHOOK_URL")
 
 
-def try_request_insecure(func, *args, **kwargs):
+def try_request(func, *args, **kwargs):
     res = None
+    s = requests.Session()
+    retries = Retry(
+        total=20,
+        backoff_factor=1,
+        backoff_jitter=0.5,
+        status_forcelist=[500, 502, 503, 504],
+    )
+    s.mount("https://", HTTPAdapter(max_retries=retries))
+
     try:
-        res = func(*args, **kwargs)
+        if func == "get":
+            res = s.get(*args, **kwargs, timeout=1)
+        else:
+            res = s.post(*args, **kwargs, timeout=1)
     except Exception as _e:
-        pass
-    if res is None:
-        try:
-            res = func(*args, verify=False)
-        except Exception as _e:
-            pass
-    if res is None:
         print("Error during request")
+        # print(_e)
         exit(1)
     return res
 
 
 # login to get the cookie
-login = try_request_insecure(requests.get, SECRET_LOGIN)
+login = try_request("get", SECRET_LOGIN)
 cookie = login.history[0].cookies["PHPSESSID"]
 
 
@@ -56,8 +63,8 @@ def load_data():
 
 
 # get the data
-response = try_request_insecure(
-    requests.post,
+response = try_request(
+    "post",
     "https://offres-et-candidatures-cifre.anrt.asso.fr/espace-membre/offre/dtList",
     cookies={
         "PHPSESSID": cookie,
@@ -73,8 +80,8 @@ response = try_request_insecure(
 
 
 def notify(text):
-    try_request_insecure(
-        requests.post,
+    try_request(
+        "post",
         URL_WEBHOOK,
         json={
             "username": "ANTR checker",
@@ -95,7 +102,8 @@ except Exception as e:
     resp = {}
 
 if "data" not in resp:
-    notify("Invalid cookie")
+    # notify("Invalid cookie")
+    print("Cookie size: {len(cookie)}")
     exit(1)
 
 resp = resp["data"]
