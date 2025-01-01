@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "antr-checker"
-version = "1.0.0"
+version = "1.0.1"
 description = "A simple tool to check the ANTR website"
 readme = "README.md"
 authors = [{ name = "n4n5", email = "its.just.n4n5@gmail.com" }]
