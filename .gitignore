@@ -2,3 +2,4 @@
 data.json
 dist/
 *.egg-info/
+__pycache__

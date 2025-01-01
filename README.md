@@ -8,11 +8,13 @@ Scrap PhD offers from [ANRT website](https://offres-et-candidatures-cifre.anrt.a
 
 The discord server: <https://discord.gg/NjnyzvMKhr>
 
-## `.env`
+## Usage
 
-```env
-WEBHOOK_URL="https://discord.com/api/webhooks/....."
-SECRET_LOGIN=https://offres-et-candidatures-cifre.anrt.asso.fr/autoconnect/...
+```sh
+export WEBHOOK_URL="https://discord.com/api/webhooks/....."
+export SECRET_LOGIN="https://offres-et-candidatures-cifre.anrt.asso.fr/autoconnect/..."
+# or use a .env file
+python -m antr_checker
 ```
 
 ## LICENSE

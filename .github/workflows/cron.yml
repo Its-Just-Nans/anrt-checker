@@ -28,7 +28,7 @@ jobs:
                   pip install python-dotenv requests
                   pip install antr-checker
             - name: run
-              run: python -m antr-checker
+              run: python -m antr_checker
               env: # Or as an environment variable
                   WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
                   SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
