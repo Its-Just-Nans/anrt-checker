@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""antr-checker"""
+"""anrt-checker"""
 
 from .lib import main
 

@@ -1,4 +1,4 @@
-"""antr_checker lib"""
+"""anrt_checker lib"""
 
 from os import getenv
 from os.path import exists
@@ -60,7 +60,7 @@ def notify(url, text):
         "post",
         url,
         json={
-            "username": "ANTR checker",
+            "username": "ANRT checker",
             "content": text,
             "avatar_url": "https://offres-et-candidatures-cifre.anrt.asso.fr/public/images/logos/logo-cifre-s.png",
         },
