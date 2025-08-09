@@ -6,7 +6,7 @@
 
 Scrap PhD offers from [ANRT website](https://offres-et-candidatures-cifre.anrt.asso.fr) and send them to a discord channel.
 
-The discord server: <https://discord.gg/NjnyzvMKhr>
+The discord server: **project is not enabled anymore, you can fork it and enable again the cron**
 
 ## Usage
 
